@@ -1,7 +1,7 @@
-"use strict";
+'use strict'
 
-import { pluginId } from "./pluginId";
-import type config from '..';
+import { pluginId } from './pluginId'
+import type config from '..'
 
 type Config = typeof config;
 type Services = Config['services'];
@@ -12,6 +12,7 @@ type Services = Config['services'];
  * @return {any} service.
  */
 export const getPluginService = <ServiceName extends keyof Services>(name: ServiceName) => {
-  const service = strapi.service<ReturnType<Services[ServiceName]>>(`plugin::${pluginId}.${name}`);
-  return service as Exclude<typeof service, undefined>;
-};
+  // @ts-ignore
+  const service = strapi.service<ReturnType<Services[ServiceName]>>(`plugin::${ pluginId }.${ name }`)
+  return service as Exclude<typeof service, undefined>
+}

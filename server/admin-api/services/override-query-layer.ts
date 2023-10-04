@@ -1,25 +1,26 @@
-'use strict';
+'use strict'
 
-import { getPluginService } from '../../util/getPluginService';
+import { getPluginService } from '../../util/getPluginService'
 
 export default () => ({
   initialize: () => {
-    const queryAPIs = [strapi.entityService, strapi.db.query, strapi.query];
-    const methods = ['findMany', 'findOne'];
+    const queryAPIs = [strapi.entityService, strapi.db.query, strapi.query]
+    const methods = ['findMany', 'findOne']
 
     queryAPIs.map((API) => {
       methods.map((method) => {
         API[method] = (() => {
-          const storedMethod = API[method];
+          const storedMethod = API[method]
 
-          return async function() {
+          return async function () {
+            // @ts-ignore
             // eslint-disable-next-line prefer-rest-params
-            let response = await storedMethod.apply(this, arguments);
-            response = await getPluginService('preparePathService').response(response);
-            return response;
-          };
-        })();
-      });
-    });
+            let response = await storedMethod.apply(this, arguments)
+            response = await getPluginService('preparePathService').response(response)
+            return response
+          }
+        })()
+      })
+    })
   },
 });
